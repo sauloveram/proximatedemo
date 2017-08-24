@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/login_user_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="48dp"
+            app:errorTextAppearance="@style/error_appearance"
+            app:hintTextAppearance="@style/MyTextAppearancetlcerrorLogin">>
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/login_user_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_user"
+                android:inputType="textEmailAddress"
+                android:maxLength="100"
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_light_gray"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/login_pass_il"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:errorTextAppearance="@style/error_appearance"
+            app:hintTextAppearance="@style/MyTextAppearancetlcerrorLogin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/login_pass_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/login_pass"
+                android:inputType="textPassword"
+                android:maxLength="100"
+                android:textColor="@color/white"
+                android:textColorHint="@color/light_light_gray"
+                android:textSize="16sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorPrimary"
+            android:text="@string/login_login"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/progressContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/transparent_blue"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true" />
+
+        <TextView
+            android:id="@+id/txtProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/progress"
+            android:gravity="center"
+            android:text="@string/login_loading"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
