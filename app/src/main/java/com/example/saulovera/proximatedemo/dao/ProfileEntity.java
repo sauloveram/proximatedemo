@@ -8,13 +8,21 @@ public class ProfileEntity {
 
     private Long id;
     /** Not-null value. */
+    private String id_server;
+    /** Not-null value. */
     private String name;
-    private String lastname;
-    private String secondname;
-    private String telephone;
-    private String zipCode;
+    private String apellidos;
+    private String correo;
+    private String numero_documento;
+    private String ultima_sesion;
+    private String eliminado;
+    private String documentos_id;
+    private String documentos_label;
+    private String token;
+    private String url_photo;
+    private String activo;
     private Double latPoint;
-    private Double lonPoint;
+    private Double longPoint;
 
     public ProfileEntity() {
     }
@@ -23,15 +31,22 @@ public class ProfileEntity {
         this.id = id;
     }
 
-    public ProfileEntity(Long id, String name, String lastname, String secondname, String telephone, String zipCode, Double latPoint, Double lonPoint) {
+    public ProfileEntity(Long id, String id_server, String name, String apellidos, String correo, String numero_documento, String ultima_sesion, String eliminado, String documentos_id, String documentos_label, String token, String url_photo, String activo, Double latPoint, Double longPoint) {
         this.id = id;
+        this.id_server = id_server;
         this.name = name;
-        this.lastname = lastname;
-        this.secondname = secondname;
-        this.telephone = telephone;
-        this.zipCode = zipCode;
+        this.apellidos = apellidos;
+        this.correo = correo;
+        this.numero_documento = numero_documento;
+        this.ultima_sesion = ultima_sesion;
+        this.eliminado = eliminado;
+        this.documentos_id = documentos_id;
+        this.documentos_label = documentos_label;
+        this.token = token;
+        this.url_photo = url_photo;
+        this.activo = activo;
         this.latPoint = latPoint;
-        this.lonPoint = lonPoint;
+        this.longPoint = longPoint;
     }
 
     public Long getId() {
@@ -40,6 +55,16 @@ public class ProfileEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** Not-null value. */
+    public String getId_server() {
+        return id_server;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setId_server(String id_server) {
+        this.id_server = id_server;
     }
 
     /** Not-null value. */
@@ -52,36 +77,84 @@ public class ProfileEntity {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getSecondname() {
-        return secondname;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setSecondname(String secondname) {
-        this.secondname = secondname;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getNumero_documento() {
+        return numero_documento;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setNumero_documento(String numero_documento) {
+        this.numero_documento = numero_documento;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getUltima_sesion() {
+        return ultima_sesion;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setUltima_sesion(String ultima_sesion) {
+        this.ultima_sesion = ultima_sesion;
+    }
+
+    public String getEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(String eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public String getDocumentos_id() {
+        return documentos_id;
+    }
+
+    public void setDocumentos_id(String documentos_id) {
+        this.documentos_id = documentos_id;
+    }
+
+    public String getDocumentos_label() {
+        return documentos_label;
+    }
+
+    public void setDocumentos_label(String documentos_label) {
+        this.documentos_label = documentos_label;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUrl_photo() {
+        return url_photo;
+    }
+
+    public void setUrl_photo(String url_photo) {
+        this.url_photo = url_photo;
+    }
+
+    public String getActivo() {
+        return activo;
+    }
+
+    public void setActivo(String activo) {
+        this.activo = activo;
     }
 
     public Double getLatPoint() {
@@ -92,12 +165,12 @@ public class ProfileEntity {
         this.latPoint = latPoint;
     }
 
-    public Double getLonPoint() {
-        return lonPoint;
+    public Double getLongPoint() {
+        return longPoint;
     }
 
-    public void setLonPoint(Double lonPoint) {
-        this.lonPoint = lonPoint;
+    public void setLongPoint(Double longPoint) {
+        this.longPoint = longPoint;
     }
 
 }

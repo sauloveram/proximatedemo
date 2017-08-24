@@ -43,7 +43,7 @@ public class HTTPSWSClient {
             urlConnect = url;
             connection = (HttpsURLConnection) new URL(urlConnect)
                     .openConnection();
-            //connection.addRequestProperty("JSESSIONATG", tokentosend);
+
             connection.setReadTimeout(READ_TIME_OUT);
             connection.setConnectTimeout(CONNECTION_TIME_OUT);
             connection.addRequestProperty("Content-type", "application/json");
@@ -67,12 +67,17 @@ public class HTTPSWSClient {
 
                     connection.setRequestMethod("POST");
                     connection.setDoOutput(true);
+                    if (url.contains(URL_SERVICE.USER_DATA)) {
+                        connection.addRequestProperty("Authorization", "{"+params+"}");
+                        params = "";
+                    }
                     DataOutputStream writer = new DataOutputStream(
                             connection.getOutputStream());
                     byte[] utf8JsonString = params.getBytes("UTF8");
                     writer.write(utf8JsonString, 0, utf8JsonString.length);
                     writer.flush();
                     writer.close();
+
                     if (connection.getResponseCode() > 199 && 300 > connection.getResponseCode()) {
                         mInputStream = connection.getInputStream();
                     } else {

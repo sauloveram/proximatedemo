@@ -19,8 +19,15 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.example.saulovera.proximatedemo.MainActivity;
 import com.example.saulovera.proximatedemo.R;
+import com.example.saulovera.proximatedemo.dao.ProfileEntity;
+import com.example.saulovera.proximatedemo.dao.ProfileEntityDao;
+import com.example.saulovera.proximatedemo.dao.SectionEntityDao;
 import com.example.saulovera.proximatedemo.vo.LoginRequest;
+import com.example.saulovera.proximatedemo.vo.LoginResponse;
+import com.example.saulovera.proximatedemo.vo.ProfileSection;
+import com.example.saulovera.proximatedemo.vo.UserResponse;
 import com.example.saulovera.proximatedemo.wsclient.HTTPSWSClient;
 import com.example.saulovera.proximatedemo.wsclient.ServiceCallback;
 import com.example.saulovera.proximatedemo.wsclient.URL_SERVICE;
@@ -96,25 +103,7 @@ public class LoginFragment extends Fragment {
                 request.setContrasenia(pass);
 
                 WSAsyncTask task = new WSAsyncTask(URL_SERVICE.USER_LOGIN, HTTPSWSClient.POST, new Gson().toJson(request));
-                task.setmCallback(new ServiceCallback() {
-                    @Override
-                    public void onServiceCallback(Object o) {
-
-                        if (isAdded()) {
-                            dissmisLoading();
-                            new AlertDialog.Builder(getActivity())
-                                    .setTitle("Alerta!")
-                                    .setIcon(0)
-                                    .setMessage((String) o)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                        public void onClick(final DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    }).show();
-
-                        }
-                    }
-                });
+                task.setmCallback(mcallback);
                 task.execute();
                 showLoading();
 
@@ -122,6 +111,120 @@ public class LoginFragment extends Fragment {
         });
 
     }
+
+    private String token = "";
+
+    private ServiceCallback mcallback = new ServiceCallback() {
+        @Override
+        public void onServiceCallback(Object o) {
+            if (isAdded()) {
+                try {
+
+
+                    Gson gson = new Gson();
+                    LoginResponse loginResponse = gson.fromJson((String) o, LoginResponse.class);
+
+                    if (loginResponse.getSuccess().equals("true")) {
+                        token = loginResponse.getToken();
+                        WSAsyncTask task = new WSAsyncTask(URL_SERVICE.USER_DATA, HTTPSWSClient.POST, new Gson().toJson(loginResponse.getToken()));
+                        task.setmCallback(mcallback);
+                        task.execute();
+                    } else {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Alerta!")
+                                .setIcon(0)
+                                .setMessage(loginResponse.getMessage())
+                                .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Alerta!")
+                            .setIcon(0)
+                            .setMessage("Ocurrio un problema")
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            }
+        }
+    };
+
+    private ServiceCallback mcallbackProfile = new ServiceCallback() {
+        @Override
+        public void onServiceCallback(Object o) {
+
+            try {
+                Gson gson = new Gson();
+                UserResponse loginResponse = gson.fromJson((String) o, UserResponse.class);
+
+                if (loginResponse.getSuccess().equals("true")) {
+                   saveUser(loginResponse);
+                } else {
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle("Alerta!")
+                            .setIcon(0)
+                            .setMessage(loginResponse.getMessage())
+                            .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .show();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("Alerta!")
+                        .setIcon(0)
+                        .setMessage("Ocurrio un problema")
+                        .setNegativeButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+
+        }
+    };
+
+    private void saveUser(UserResponse userResponse){
+        if(isAdded()){
+            MainActivity activity = (MainActivity)getActivity();
+            ProfileEntityDao profileEntityDao = activity.getDaoSession().getProfileEntityDao();
+            profileEntityDao.deleteAll();
+            SectionEntityDao sectionEntityDao = activity.getDaoSession().getSectionEntityDao();
+            sectionEntityDao.deleteAll();
+
+            ProfileEntity profileEntity = new ProfileEntity();
+            profileEntity.setCorreo(userResponse.getData().get(0).getCorreo());
+            profileEntity.setActivo(userResponse.getData().get(0).getEstados_usuarios_label());
+            profileEntity.setApellidos(userResponse.getData().get(0).getApellidos());
+            profileEntity.setDocumentos_id(userResponse.getData().get(0).getDocumentos_id());
+            profileEntity.setEliminado(userResponse.getData().get(0).getEliminado());
+            profileEntity.setDocumentos_label(userResponse.getData().get(0).getDocumentos_label());
+            profileEntity.setId_server(userResponse.getData().get(0).getId());
+            profileEntity.setNumero_documento(userResponse.getData().get(0).getNumero_documento());
+            profileEntity.setToken(token);
+            profileEntity.setUltima_sesion(userResponse.getData().get(0).getUltima_sesion());
+            profileEntity.setName(userResponse.getData().get(0).getNombres());
+
+            for (ProfileSection profileSection: userResponse.getData().get(0).getSecciones() ){
+                
+            }
+
+        }
+    }
+
 
     private String REGEX_MAIL = "^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,25}$";
 
@@ -134,25 +237,25 @@ public class LoginFragment extends Fragment {
     private void dissmisLoading() {
         if (isAdded()) {
             if (rootView.findViewById(R.id.progressContent).getVisibility() == View.VISIBLE) {
-                    rootView.findViewById(R.id.progressContent).animate().alpha(0f).setListener(new Animator.AnimatorListener() {
-                        @Override
-                        public void onAnimationStart(Animator animator) {
-                        }
+                rootView.findViewById(R.id.progressContent).animate().alpha(0f).setListener(new Animator.AnimatorListener() {
+                    @Override
+                    public void onAnimationStart(Animator animator) {
+                    }
 
-                        @Override
-                        public void onAnimationEnd(Animator animator) {
-                            rootView.findViewById(R.id.progressContent).setVisibility(View.GONE);
-                        }
+                    @Override
+                    public void onAnimationEnd(Animator animator) {
+                        rootView.findViewById(R.id.progressContent).setVisibility(View.GONE);
+                    }
 
-                        @Override
-                        public void onAnimationCancel(Animator animator) {
-                            rootView.findViewById(R.id.progressContent).setVisibility(View.GONE);
-                        }
+                    @Override
+                    public void onAnimationCancel(Animator animator) {
+                        rootView.findViewById(R.id.progressContent).setVisibility(View.GONE);
+                    }
 
-                        @Override
-                        public void onAnimationRepeat(Animator animator) {
-                        }
-                    });
+                    @Override
+                    public void onAnimationRepeat(Animator animator) {
+                    }
+                });
 
             }
         }

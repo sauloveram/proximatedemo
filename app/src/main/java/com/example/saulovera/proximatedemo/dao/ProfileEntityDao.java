@@ -24,13 +24,20 @@ public class ProfileEntityDao extends AbstractDao<ProfileEntity, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property Lastname = new Property(2, String.class, "lastname", false, "LASTNAME");
-        public final static Property Secondname = new Property(3, String.class, "secondname", false, "SECONDNAME");
-        public final static Property Telephone = new Property(4, String.class, "telephone", false, "TELEPHONE");
-        public final static Property ZipCode = new Property(5, String.class, "zipCode", false, "ZIP_CODE");
-        public final static Property LatPoint = new Property(6, Double.class, "latPoint", false, "LAT_POINT");
-        public final static Property LonPoint = new Property(7, Double.class, "lonPoint", false, "LON_POINT");
+        public final static Property Id_server = new Property(1, String.class, "id_server", false, "ID_SERVER");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
+        public final static Property Apellidos = new Property(3, String.class, "apellidos", false, "APELLIDOS");
+        public final static Property Correo = new Property(4, String.class, "correo", false, "CORREO");
+        public final static Property Numero_documento = new Property(5, String.class, "numero_documento", false, "NUMERO_DOCUMENTO");
+        public final static Property Ultima_sesion = new Property(6, String.class, "ultima_sesion", false, "ULTIMA_SESION");
+        public final static Property Eliminado = new Property(7, String.class, "eliminado", false, "ELIMINADO");
+        public final static Property Documentos_id = new Property(8, String.class, "documentos_id", false, "DOCUMENTOS_ID");
+        public final static Property Documentos_label = new Property(9, String.class, "documentos_label", false, "DOCUMENTOS_LABEL");
+        public final static Property Token = new Property(10, String.class, "token", false, "TOKEN");
+        public final static Property Url_photo = new Property(11, String.class, "url_photo", false, "URL_PHOTO");
+        public final static Property Activo = new Property(12, String.class, "activo", false, "ACTIVO");
+        public final static Property LatPoint = new Property(13, Double.class, "latPoint", false, "LAT_POINT");
+        public final static Property LongPoint = new Property(14, Double.class, "longPoint", false, "LONG_POINT");
     };
 
 
@@ -47,13 +54,20 @@ public class ProfileEntityDao extends AbstractDao<ProfileEntity, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"PROFILE_ENTITY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"NAME\" TEXT NOT NULL ," + // 1: name
-                "\"LASTNAME\" TEXT," + // 2: lastname
-                "\"SECONDNAME\" TEXT," + // 3: secondname
-                "\"TELEPHONE\" TEXT," + // 4: telephone
-                "\"ZIP_CODE\" TEXT," + // 5: zipCode
-                "\"LAT_POINT\" REAL," + // 6: latPoint
-                "\"LON_POINT\" REAL);"); // 7: lonPoint
+                "\"ID_SERVER\" TEXT NOT NULL ," + // 1: id_server
+                "\"NAME\" TEXT NOT NULL ," + // 2: name
+                "\"APELLIDOS\" TEXT," + // 3: apellidos
+                "\"CORREO\" TEXT," + // 4: correo
+                "\"NUMERO_DOCUMENTO\" TEXT," + // 5: numero_documento
+                "\"ULTIMA_SESION\" TEXT," + // 6: ultima_sesion
+                "\"ELIMINADO\" TEXT," + // 7: eliminado
+                "\"DOCUMENTOS_ID\" TEXT," + // 8: documentos_id
+                "\"DOCUMENTOS_LABEL\" TEXT," + // 9: documentos_label
+                "\"TOKEN\" TEXT," + // 10: token
+                "\"URL_PHOTO\" TEXT," + // 11: url_photo
+                "\"ACTIVO\" TEXT," + // 12: activo
+                "\"LAT_POINT\" REAL," + // 13: latPoint
+                "\"LONG_POINT\" REAL);"); // 14: longPoint
     }
 
     /** Drops the underlying database table. */
@@ -71,36 +85,67 @@ public class ProfileEntityDao extends AbstractDao<ProfileEntity, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getName());
+        stmt.bindString(2, entity.getId_server());
+        stmt.bindString(3, entity.getName());
  
-        String lastname = entity.getLastname();
-        if (lastname != null) {
-            stmt.bindString(3, lastname);
+        String apellidos = entity.getApellidos();
+        if (apellidos != null) {
+            stmt.bindString(4, apellidos);
         }
  
-        String secondname = entity.getSecondname();
-        if (secondname != null) {
-            stmt.bindString(4, secondname);
+        String correo = entity.getCorreo();
+        if (correo != null) {
+            stmt.bindString(5, correo);
         }
  
-        String telephone = entity.getTelephone();
-        if (telephone != null) {
-            stmt.bindString(5, telephone);
+        String numero_documento = entity.getNumero_documento();
+        if (numero_documento != null) {
+            stmt.bindString(6, numero_documento);
         }
  
-        String zipCode = entity.getZipCode();
-        if (zipCode != null) {
-            stmt.bindString(6, zipCode);
+        String ultima_sesion = entity.getUltima_sesion();
+        if (ultima_sesion != null) {
+            stmt.bindString(7, ultima_sesion);
+        }
+ 
+        String eliminado = entity.getEliminado();
+        if (eliminado != null) {
+            stmt.bindString(8, eliminado);
+        }
+ 
+        String documentos_id = entity.getDocumentos_id();
+        if (documentos_id != null) {
+            stmt.bindString(9, documentos_id);
+        }
+ 
+        String documentos_label = entity.getDocumentos_label();
+        if (documentos_label != null) {
+            stmt.bindString(10, documentos_label);
+        }
+ 
+        String token = entity.getToken();
+        if (token != null) {
+            stmt.bindString(11, token);
+        }
+ 
+        String url_photo = entity.getUrl_photo();
+        if (url_photo != null) {
+            stmt.bindString(12, url_photo);
+        }
+ 
+        String activo = entity.getActivo();
+        if (activo != null) {
+            stmt.bindString(13, activo);
         }
  
         Double latPoint = entity.getLatPoint();
         if (latPoint != null) {
-            stmt.bindDouble(7, latPoint);
+            stmt.bindDouble(14, latPoint);
         }
  
-        Double lonPoint = entity.getLonPoint();
-        if (lonPoint != null) {
-            stmt.bindDouble(8, lonPoint);
+        Double longPoint = entity.getLongPoint();
+        if (longPoint != null) {
+            stmt.bindDouble(15, longPoint);
         }
     }
 
@@ -115,13 +160,20 @@ public class ProfileEntityDao extends AbstractDao<ProfileEntity, Long> {
     public ProfileEntity readEntity(Cursor cursor, int offset) {
         ProfileEntity entity = new ProfileEntity( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // name
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // lastname
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // secondname
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // telephone
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // zipCode
-            cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6), // latPoint
-            cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7) // lonPoint
+            cursor.getString(offset + 1), // id_server
+            cursor.getString(offset + 2), // name
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // apellidos
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // correo
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // numero_documento
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // ultima_sesion
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // eliminado
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // documentos_id
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // documentos_label
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // token
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // url_photo
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // activo
+            cursor.isNull(offset + 13) ? null : cursor.getDouble(offset + 13), // latPoint
+            cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14) // longPoint
         );
         return entity;
     }
@@ -130,13 +182,20 @@ public class ProfileEntityDao extends AbstractDao<ProfileEntity, Long> {
     @Override
     public void readEntity(Cursor cursor, ProfileEntity entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setName(cursor.getString(offset + 1));
-        entity.setLastname(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setSecondname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setTelephone(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setZipCode(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setLatPoint(cursor.isNull(offset + 6) ? null : cursor.getDouble(offset + 6));
-        entity.setLonPoint(cursor.isNull(offset + 7) ? null : cursor.getDouble(offset + 7));
+        entity.setId_server(cursor.getString(offset + 1));
+        entity.setName(cursor.getString(offset + 2));
+        entity.setApellidos(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setCorreo(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setNumero_documento(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setUltima_sesion(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setEliminado(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setDocumentos_id(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setDocumentos_label(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setToken(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setUrl_photo(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setActivo(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setLatPoint(cursor.isNull(offset + 13) ? null : cursor.getDouble(offset + 13));
+        entity.setLongPoint(cursor.isNull(offset + 14) ? null : cursor.getDouble(offset + 14));
      }
     
     /** @inheritdoc */

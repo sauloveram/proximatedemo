@@ -1,9 +1,6 @@
 package com.example.saulovera.proximatedemo.wsclient;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.example.saulovera.proximatedemo.vo.BaseResponseObject;
@@ -12,17 +9,17 @@ import com.google.gson.Gson;
 
 public class WSAsyncTask extends AsyncTask<String, Integer, Object> {
 
-    private String mCualWS;
+    private String mWS;
     private String mParams = "";
-    private int mtipo;
+    private int mMethod;
     private static final String TAG = WSAsyncTask.class.getName();
     private String result;
     private ServiceCallback mCallback;
 
-    public WSAsyncTask(String cualWS, int method, String params) {
+    public WSAsyncTask(String WS, int method, String params) {
         mParams = params;
-        mCualWS = cualWS;
-        mtipo = method;
+        mWS = WS;
+        mMethod = method;
 
 
     }
@@ -33,7 +30,7 @@ public class WSAsyncTask extends AsyncTask<String, Integer, Object> {
 
         HTTPSWSClient ws = new HTTPSWSClient();
         try {
-            return (String) ws.WSClientConsumerBasic(mCualWS, mParams, mtipo);
+            return ws.WSClientConsumerBasic(mWS, mParams, mMethod);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +48,8 @@ public class WSAsyncTask extends AsyncTask<String, Integer, Object> {
             Log.wtf("Error!!", "No callback");
             return;
         }
-            mCallback.onServiceCallback(result);
+        Log.wtf("Result", (String) result);
+        mCallback.onServiceCallback(result);
 
     }
 
